@@ -31,9 +31,29 @@ bool vazio (Deque<T> &D)
 }
 
 template <typename T>
+bool cheio (Deque<T> &D)
+{
+	return (D.D == (D.E - 1)) || ((D.I == D.E) && (D.F == D.D));
+
+	/*if((D.D == (D.E - 1)) || ((D.I == D.E) && (D.F == D.D))) 
+	{
+		return true;
+	}
+	else
+		return false;*/
+
+
+}
+
+template <typename T>
 bool inserir_esq (Deque<T> &D, T e)
 {
-	
+	if(vazio(D)) {T.D = T.E = T.I;}
+	else if(cheio(D))
+	{
+		
+	}
+
 }
 
 
