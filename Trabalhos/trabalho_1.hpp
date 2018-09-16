@@ -33,167 +33,105 @@ bool vazio (Deque<T> &D)
 template <typename T>
 bool cheio (Deque<T> &D)
 {
-	return (D.D == (D.E - 1)) || ((D.I == D.E) && (D.F == D.D));
+	return ((D.D == (D.E - 1)) || ((D.I == D.E) && (D.F == D.D)));
 }
 
 template <typename T>
-bool inserir_esq (Deque<T> &D, T e)
+bool inserir_esq(Deque<T> &D, T e)
 {
-	if(vazio(D)) 
+if(vazio(D))
+{
+D.D = D.E = D.I;
+*D.E = e;
+return false;
+}
+else if(cheio(D))
+{
+int novo_t = ((D.F - D.I)+1)*2;
+T *V = new(nothrow) T[novo_t];
+if(V == nullptr) {return true;}
+T *p = D.E;
+T *q = V;
+if ((D.E == D.D)&&(D.E == D.I)&&(D.E == D.F))
+{
+	*q = *p;
+	++q;
+}
+else
+{
+	do
 	{
-	D.D = D.E = D.I;
-	*D.E = e;
-	}
-	else
-	{
-		if(cheio(D))
+		*q = *p;
+		if (p == D.F)
 		{
-			int novo_v=(((D.F - D.I)+1)*2);
-
-			T *V = new(nothrow) T[novo_v];
-			if (V==nullptr) {return true;}
-			T *p = D.E;
-			T *q = V;
+			p = D.I;
 			++q;
-
-			if ((D.E==D.D)&&(D.E==D.I)&&(D.E==D.F))
-			{
-				*q = *p;
-			}
-			else if((D.E == D.F))
-			{
-				*q = *p;
-				p = D.I;
-				++q;
-				while(p != D.D)
-				{
-					*q = *p;
-					++q;
-					++p;
-				}
-				*q = *p;
-			}
-			else if((D.E == D.I)&&(D.D == D.F))
-			{
-				do
-				{
-					*q = *p;
-					++q;
-					++p;
-				}while(p != D.D);
-				*q = *p;
-			}
-			else
-			{
-				do
-				{
-					*q = *p;
-					++q;
-					++p;
-				}while(p != D.F);
-				*q = *p;
-				p = D.I;
-				while(p != D.D)
-				{
-					*q = *p;
-					++q;
-					++p;
-				}
-				*q = *p;
-			}
-			delete[]D.I;
-			D.I=V;
-			D.F=D.I + (novo_v - 1);
-			D.E=D.I;
-			D.D=q; // ***
-			*D.I = e;
 		}
 		else
 		{
-		(D.E==D.I)?(D.E = D.F):--D.E;
-		*D.E = e;
+			++q;
+			++p;
 		}
+		}while(p != D.E);
 	}
-
-	return false;
+	delete[] D.I;
+	D.I = V;
+	D.F = D.I + (novo_t - 1);
+	D.E = D.I;
+	D.D = q - 1;
+}
+(D.E == D.I)?(D.E = D.F):--D.E;
+*D.E = e;
+return false;
 }
 
 template <typename T>
 bool inserir_dir(Deque<T> &D, T e)
 {
-	if (vazio(D))
+if(vazio(D))
+{
+D.D = D.E = D.I;
+*D.D = e;
+return false;
+}
+else if(cheio(D))
+{
+int novo_t = ((D.F - D.I)+1)*2;
+T *V = new(nothrow) T[novo_t];
+if(V == nullptr) {return true;}
+T *p = D.E;
+T *q = V;
+if ((D.E == D.D)&&(D.E == D.I)&&(D.E == D.F))
+{
+	*q = *p;
+	++q;
+}
+else
+{
+	do
 	{
-		D.E = D.D = D.I;
-		*D.E = e;
-	}
-	else if(cheio(D))
-	{
-		int novo_v = (((D.F - D.I)+1)*2);
-		T *V = new(nothrow) T[novo_v];
-		if (V == nullptr) {return true;}
-		T *q = V;
-		T *p = D.E;
-
-		if ((D.E == D.D)&&(D.E == D.I)&&(D.E == D.F))
-			{
-				*q = *p;
-			}
-		else if(D.E == D.F)
+		*q = *p;
+		if (p == D.F)
 		{
-			*q = *p;
 			p = D.I;
 			++q;
-			while(p != D.F)
-			{
-				*q = *p;
-				++q;
-				++p;
-			}
-			*q = *p;
-		}
-		else if((D.E == D.I)&&(D.D == D.F))
-		{
-			do
-			{
-				*q = *p;
-				++q;
-				++p;
-			}while(p != D.D);
-			*q = *p;
 		}
 		else
 		{
-			do
-			{
-			*q = *p;
 			++q;
 			++p;
-			}while(p != D.F);
-			*q = *p;
-			p = D.I;
-			++q;
-			while(p != D.D)
-			{
-				*q = *p;
-				++q;
-				++p;
-			}
-			*q = *p;
 		}
-		delete[]D.I;
-		D.I=V;
-		D.F=D.I + (novo_v - 1);
-		D.E=D.I;
-		D.D=q-1; // ***
-		++D.D;
-		*D.D = e;	
+		}while(p != D.E);
 	}
-	else
-	{
-	(D.D == D.F)?(D.D = D.I):++D.D;
-	*D.D = e;
-	}
-	return false;
+	delete[] D.I;
+	D.I = V;
+	D.F = D.I + (novo_t - 1);
+	D.E = D.I;
+	D.D = q - 1;
+}
+(D.D == D.F)?(D.D = D.I):++D.D;
+*D.D = e;
+return false;
 }
 
 template <typename T>
@@ -233,16 +171,3 @@ T remover_dir(Deque <T> &D)
 	}
 	return p;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
